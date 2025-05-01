@@ -14,8 +14,11 @@ st.sidebar.header("Upload and Settings")
 uploaded_file = st.sidebar.file_uploader("📂 Upload your CSV file", type=['csv'])
 
 if uploaded_file is not None:
-    # Read data
-    data = pd.read_csv(uploaded_file)
+    # Try reading CSV with fallback encoding
+    try:
+        data = pd.read_csv(uploaded_file)
+    except UnicodeDecodeError:
+        data = pd.read_csv(uploaded_file, encoding='latin1')
 
     st.sidebar.subheader("⚙️ Settings")
     feature_x = st.sidebar.selectbox("Select X-axis Feature", data.columns)
@@ -94,3 +97,8 @@ if uploaded_file is not None:
 else:
     st.info("👈 Upload a CSV file from the sidebar to get started!")
 
+
+ 
+
+  
+       
